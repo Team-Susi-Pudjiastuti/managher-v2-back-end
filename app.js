@@ -1,14 +1,17 @@
 const express = require('express');
 const app = express();
-const allRoutes = require('./routes/index');
+
 const port = 3000 || process.env.PORT;
 
 //init
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const connectDB = require('./config/db');
 connectDB();
 
+const allRoutes = require('./routes/index');
 app.use(allRoutes)
 
 app.listen(port, () =>{
