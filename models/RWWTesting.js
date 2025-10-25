@@ -9,18 +9,18 @@ const RWWTestingSchema = new mongoose.Schema({
     // Data Responden
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     gender: {
         type: String,
         enum: ['Laki-laki', 'Perempuan', 'Tidak mau memberi tau'],
-        required: true,
+        required: false,
     },
     // ubah sesuai kebutuhan
     activity: {
         type: String,
         enum: ['Mahasiswa', 'Ibu rumah tangga', 'Pekerja', 'Lainnya', 'Tidak mau memberi tau'],
-        required: true,
+        required: false,
     },
 
     // Data Testing

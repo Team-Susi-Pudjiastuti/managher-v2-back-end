@@ -7,28 +7,28 @@ const mongoose = require('mongoose');
     },
     idea: {
         type: String,
-        required: true,
+        required: false,
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
     category: {
         type: String,
         enum: ['Makanan/Minuman', 'Jasa', 'Pakaian', 'Teknologi', 'Lainnya'],
-        required: true,
+        required: false,
     },
     marketPotential: {
         type: String,
-        required: true,
+        required: false,
     },
     problemSolved: {
         type: String,
-        required: true,
+        required: false,
     },
     solutionOffered: {
         type: String,
-        required: true,
+        required: false,
     },
 }, {
     timestamps: true,
