@@ -18,15 +18,17 @@ const LevelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    entity_type: {
-        type: String,
-        enum: ['business_idea', 'rww_testing', 'product_concept', 'brand_identity', 'lean_canvas', 'beta_testing', 'mvp_image', 'launch_preparation'],
-        required: true
-    },
-    entity_ref: {
-        type: mongoose.Schema.Types.ObjectId,
-        refPath: 'entity_type'
-    },
+    entities: [{
+        entity_type: {
+            type: String,
+            enum: ['business_idea', 'rww_testing', 'product_concept', 'brand_identity', 'lean_canvas', 'beta_testing', 'mvp_image', 'launch_preparation'],
+            required: true
+        },
+        entity_ref: {
+            type: mongoose.Schema.Types.ObjectId,
+            refPath: 'entities.entity_type'
+        },
+    }],
     status: {
         type: String,
         enum: ['locked', 'in_progress', 'completed'],

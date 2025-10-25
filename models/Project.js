@@ -11,6 +11,10 @@ const ProjectSchema = new mongoose.Schema({
     progress_percentage: {
         type: Number,
         default: 0
+    },
+    phase: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Phase',
     }
 }, { timestamps: true });
 

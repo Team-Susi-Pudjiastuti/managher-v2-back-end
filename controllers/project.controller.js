@@ -1,12 +1,14 @@
 const Project = require('../models/Project');
 const Phase = require('../models/Phase');
 const Level = require('../models/Level');
+const BusinessIdea = require('../models/BusinessIdea');
+const RWWTesting = require('../models/RWWTesting');
 
 module.exports = {
     createProject: async (req, res) => {
-        const { title } = req.body;
+        const { user, title } = req.body;
         try {
-            const newProject = await Project.create({ title });
+            const newProject = await Project.create({ user, title });
 
             await createProjectPhase(newProject._id);
 
@@ -18,54 +20,28 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
-
-
     },
 
-//     getAllProjects: async (req, res) => {
-//         try {
-//             const projects = await ProjectModel.find();
-//             res.status(200).json(projects);
-//         } catch (error) {
-//             res.status(400).json({ message: error.message });
-//         }
-//     },
-
-//     getProjectById: async (req, res) => {
-//         try {
-//             const project = await ProjectModel.findById(req.params.id);
-//             if (!project) {
-//                 return res.status(404).json({ message: 'Project not found' });
-//             }
-//             res.status(200).json(project);
-//         } catch (error) {
-//             res.status(400).json({ message: error.message });
-//         }
-//     },
-
-//     updateProject: async (req, res) => {
-//         try {
-//             const project = await ProjectModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//             if (!project) {
-//                 return res.status(404).json({ message: 'Project not found' });
-//             }
-//             res.status(200).json(project);
-//         } catch (error) {
-//             res.status(400).json({ message: error.message });
-//         }
-//     },
-
-//     deleteProject: async (req, res) => {
-//         try {
-//             const project = await ProjectModel.findByIdAndDelete(req.params.id);
-//             if (!project) {
-//                 return res.status(404).json({ message: 'Project not found' });
-//             }
-//             res.status(200).json({ message: 'Project deleted' });
-//         } catch (error) {
-//             res.status(400).json({ message: error.message });
-//         }
-//     },
+    getProjectById: async (req, res) => {
+        try {
+            const project = await Project.findById(req.params.id)
+            .populate({
+                path: 'phase',
+                populate: {
+                path: 'levels',
+                populate: {
+                    path: 'entities.entity_ref'
+                }
+                }
+            })
+            if (!project) {
+                return res.status(404).json({ message: 'Project not found' });
+            }
+            res.status(200).json(project);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
 }
 
 const createProjectPhase = async (projectId) => {
@@ -92,55 +68,72 @@ const createProjectPhase = async (projectId) => {
     ]);
 
 const planPhase = phase.find(phase => phase.name === 'plan');
+
+const businessIdea = await BusinessIdea.create({ project: projectId });
+const rww = await RWWTesting.create({ project: projectId });
+
 const levels = [
     {
         name: 'business_idea',
         order: 1,
         description: 'Business Idea',
-        entity_type: 'business_idea',
+        entities: [{
+            entity_type: 'business_idea',
+            entity_ref: businessIdea._id,
+        }],
         status: 'in_progress',
     },
     {
         name: 'rww_testing',
         order: 2,
         description: 'RWW Testing',
-        entity_type: 'rww_testing',
+        entities: [{
+            entity_type: 'rww_testing',
+            entity_ref: rww._id,
+        }],
     },
     {
         name: 'product_concept',
         order: 3,
-        description: 'Product Concept',
-        entity_type: 'product_concept',
-    },
-    {
-        name: 'brand_identity',
-        order: 3,
-        description: 'Brand Identity',
-        entity_type: 'brand_identity',
+        description: 'Product & Brand',
+        entities: [{
+            entity_type: 'product_concept',
+        },
+        {
+            entity_type: 'brand_identity',
+        }],
     },
     {
         name: 'lean_canvas',
         order: 4,
         description: 'Lean Canvas',
-        entity_type: 'lean_canvas',
+        entities: [{
+            entity_type: 'lean_canvas',
+        }],
     },
     {
         name: 'beta_testing',
         order: 5,
         description: 'Beta Testing',
-        entity_type: 'beta_testing',
+        entities: [{
+            entity_type: 'beta_testing',
+        }],
     },
     {
         name: 'mvp_image',
         order: 6,
         description: 'MVP Image',
-        entity_type: 'mvp_image',
+        entities: [{
+            entity_type: 'mvp_image',
+        }],
     },
     {
         name: 'launch_preparation',
         order: 7,
         description: 'Launch Preparation',
-        entity_type: 'launch_preparation',
+        entities: [{
+            entity_type: 'launch_preparation',
+        }],
     },
 ].map(level => ({ ...level, phase: planPhase._id }));
 

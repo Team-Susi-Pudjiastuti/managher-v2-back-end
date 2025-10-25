@@ -14,10 +14,10 @@ const rwwTestingRoutes = require('./rwwTesting.router');
 
 
 // router.use('/auth', authRoutes);
-router.use('/', userRoutes);
-router.use('/project', projectRoutes);
-router.use('/business-idea', businessIdeaRoutes);
-router.use('/rww-testing', rwwTestingRoutes);
+router.use('/api/user', userRoutes);
+router.use('/api/project', projectRoutes);
+router.use('/api/business-idea', businessIdeaRoutes);
+router.use('/api/rww-testing', rwwTestingRoutes);
 // router.use('/productPlan', productPlanRoutes);
 // router.use('/leanCanvas', leanCanvasRoutes);
 // router.use('/mvp', mvpRoutes);
