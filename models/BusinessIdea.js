@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
  const BusinessIdeaSchema = new mongoose.Schema({
-    project: {
+    projectId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
     },
@@ -34,4 +34,4 @@ const mongoose = require('mongoose');
     timestamps: true,
 });
 
-module.exports = mongoose.model('idea', BusinessIdeaSchema);
+module.exports = mongoose.model('business_idea', BusinessIdeaSchema);

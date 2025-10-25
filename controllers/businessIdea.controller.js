@@ -2,9 +2,10 @@ const BusinessIdea = require('../models/BusinessIdea');
 
 module.exports = {
     createBusinessIdea: async (req, res) => {
-        const { idea, description, category, problemSolved, solutionOffered, marketPotential } = req.body;
+        const { projectId, idea, description, category, problemSolved, solutionOffered, marketPotential } = req.body;
         try {
             const businessIdea = await BusinessIdea.create({
+                projectId,
                 idea,
                 description,
                 category,
@@ -25,8 +26,9 @@ module.exports = {
     },
 
     getAllBusinessIdeas: async (req, res) => {
+        const projectId = req.params.projectId;
         try {
-            const businessIdeas = await BusinessIdea.find();
+            const businessIdeas = await BusinessIdea.findOne({ projectId: projectId });
             res.status(200).json(
                 {
                     message: 'Business ideas retrieved successfully',
@@ -38,26 +40,19 @@ module.exports = {
         }
     },
 
-    getBusinessIdeaById: async (req, res) => {
-        try {
-            const businessIdea = await BusinessIdea.findById(req.params.id);
-            if (!businessIdea) {
-                return res.status(404).json({ message: 'Business idea not found' });
-            }
-            res.status(200).json(
-                {
-                    message: 'Business idea retrieved successfully',
-                    businessIdea,
-                }
-            );
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
-
     updateBusinessIdea: async (req, res) => {
+        const id = req.params.id;
+        const { idea, description, category, problemSolved, solutionOffered, marketPotential } = req.body;
         try {
-            const businessIdea = await BusinessIdea.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            const businessIdea = await BusinessIdea.findByIdAndUpdate(id, {
+                idea,
+                description,
+                category,
+                problemSolved,
+                solutionOffered,
+                marketPotential,
+            }, { new: true });
+            
             if (!businessIdea) {
                 return res.status(404).json({ message: 'Business idea not found' });
             }
@@ -67,21 +62,21 @@ module.exports = {
         }
     },
 
-    deleteBusinessIdea: async (req, res) => {
-        try {
-            const businessIdea = await BusinessIdea.findByIdAndDelete(req.params.id);
-            if (!businessIdea) {
-                return res.status(404).json({ message: 'Business idea not found' });
-            }
-            res.status(200).json(
-                {
-                    message: 'Business idea deleted successfully',
-                    businessIdea,
-                }
-            );
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
+    // deleteBusinessIdea: async (req, res) => {
+    //     try {
+    //         const businessIdea = await BusinessIdea.findByIdAndDelete(req.params.id);
+    //         if (!businessIdea) {
+    //             return res.status(404).json({ message: 'Business idea not found' });
+    //         }
+    //         res.status(200).json(
+    //             {
+    //                 message: 'Business idea deleted successfully',
+    //                 businessIdea,
+    //             }
+    //         );
+    //     } catch (error) {
+    //         res.status(400).json({ message: error.message });
+    //     }
+    // },
 }
 
