@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
  const BusinessIdeaSchema = new mongoose.Schema({
-    projectId: {
+    project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
     },
@@ -29,7 +29,7 @@ const mongoose = require('mongoose');
     solutionOffered: {
         type: String,
         required: false,
-    },
+    }
 }, {
     timestamps: true,
 });
