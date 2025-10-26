@@ -8,7 +8,7 @@ module.exports = {
     createProject: async (req, res) => {
         const { user, title } = req.body;
         try {
-            const newProject = await Project.create({ user, title });
+             await Project.create({ user, title });
 
             const updatedProject = await createProjectPhase(newProject._id);
 
@@ -99,17 +99,17 @@ const createProjectPhase = async (projectId) => {
                 entity_ref: rww._id,
             }],
         },
-        // {
-        //     name: 'product_concept',
-        //     order: 3,
-        //     description: 'Product & Brand',
-        //     entities: [{
-        //         entity_type: 'product_concept',
-        //     },
-        //     {
-        //         entity_type: 'brand_identity',
-        //     }],
-        // },
+        {
+            name: 'product_concept',
+            order: 3,
+            description: 'Product & Brand',
+            entities: [{
+                entity_type: 'product_concept',
+            },
+            {
+                entity_type: 'brand_identity',
+            }],
+        },
         // {
         //     name: 'lean_canvas',
         //     order: 4,
