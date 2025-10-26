@@ -23,6 +23,10 @@ const PhaseSchema = new mongoose.Schema({
         enum: ['locked', 'in_progress', 'completed'],
         default: 'locked'
     },
+    levels: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Level',
+    }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Phase', PhaseSchema);
