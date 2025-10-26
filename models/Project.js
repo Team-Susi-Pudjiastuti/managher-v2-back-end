@@ -12,10 +12,10 @@ const ProjectSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    phase: {
+    phases: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Phase',
-    }
+    }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Project', ProjectSchema);
