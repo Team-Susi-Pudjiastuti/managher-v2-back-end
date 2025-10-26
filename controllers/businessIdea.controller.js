@@ -1,38 +1,14 @@
 const BusinessIdea = require('../models/BusinessIdea');
 
 module.exports = {
-    createBusinessIdea: async (req, res) => {
-        const { projectId, idea, description, category, problemSolved, solutionOffered, marketPotential } = req.body;
+    getBusinessIdea: async (req, res) => {
+        const id = req.params.id;
         try {
-            const businessIdea = await BusinessIdea.create({
-                projectId,
-                idea,
-                description,
-                category,
-                problemSolved,
-                solutionOffered,
-                marketPotential,
-            });
-
-            res.status(201).json(
-                {
-                    message: 'Business idea created successfully',
-                    businessIdea,
-                }
-            );
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
-
-    getAllBusinessIdeas: async (req, res) => {
-        const projectId = req.params.projectId;
-        try {
-            const businessIdeas = await BusinessIdea.findOne({ projectId: projectId });
+            const businessIdea = await BusinessIdea.findById(id);
             res.status(200).json(
                 {
-                    message: 'Business ideas retrieved successfully',
-                    businessIdeas,
+                    message: 'Business idea retrieved successfully',
+                    businessIdea,
                 }
             );
         } catch (error) {
