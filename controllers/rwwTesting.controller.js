@@ -2,7 +2,7 @@ const RWWTesting = require('../models/RWWTesting');
 
 module.exports = {
     createRWWTesting: async (req, res) => {
-        const { project, name, gender, activity, real, win, worth } = req.body;
+        const { project, name, age, gender, activity, real, win, worth } = req.body;
         try {
             const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
             const realScore = sum(real);
@@ -12,6 +12,7 @@ module.exports = {
             const rwwTesting = await RWWTesting.create({
                 project,
                 name,
+                age,
                 gender,
                 activity,
                 real,
@@ -30,7 +31,7 @@ module.exports = {
 
     updateRWWTesting: async (req, res) => {
         const { id } = req.params;
-        const { project, name, gender, activity, real, win, worth } = req.body;
+        const { project, name, age, gender, activity, real, win, worth } = req.body;
         try {
             const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
             const realScore = sum(real);
@@ -40,6 +41,7 @@ module.exports = {
             const rwwTesting = await RWWTesting.findByIdAndUpdate(id, {
                 project,
                 name,
+                age,
                 gender,
                 activity,
                 real,
