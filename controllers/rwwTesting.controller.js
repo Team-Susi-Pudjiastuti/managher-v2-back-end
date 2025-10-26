@@ -1,20 +1,25 @@
 const RWWTesting = require('../models/RWWTesting');
-const Responden = require('../models/Responden');
 
 module.exports = {
     createRWWTesting: async (req, res) => {
-        const { projectId, name, gender, activity, real, win, worth } = req.body;
+        const { project, name, gender, activity, real, win, worth } = req.body;
         try {
+            const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
+            const realScore = sum(real);
+            const winScore = sum(win);
+            const worthScore = sum(worth);
+            const totalScore = realScore + winScore + worthScore;
             const rwwTesting = await RWWTesting.create({
-                projectId,
+                project,
                 name,
                 gender,
                 activity,
                 real,
                 win,
                 worth,
+                totalScore
             });
-            res.status(201).json({
+            res.status(200).json({
                 message: 'RWW Testing created',
                 rwwTesting,
             });
@@ -23,22 +28,51 @@ module.exports = {
         }
     },
 
-    getRWWTesting: async (req, res) => {
-        const { projectId } = req.params;
+    updateRWWTesting: async (req, res) => {
+        const { id } = req.params;
+        const { project, name, gender, activity, real, win, worth } = req.body;
         try {
-            const rwwTestings = await RWWTesting.find({ projectId });
+            const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
+            const realScore = sum(real);
+            const winScore = sum(win);
+            const worthScore = sum(worth);
+            const totalScore = realScore + winScore + worthScore;
+            const rwwTesting = await RWWTesting.findByIdAndUpdate(id, {
+                project,
+                name,
+                gender,
+                activity,
+                real,
+                win,
+                worth,
+                totalScore
+            }, { new: true });
             res.status(200).json({
-                message: 'RWW Testings retrieved',
-                rwwTestings,
+                message: 'RWW Testing updated',
+                rwwTesting,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
     },
-    getAverage: async (req, res) => {
-        const { projectId } = req.params;
+
+    getRWWTesting: async (req, res) => {
+        const { project } = req.params;
         try {
-            const rwwTestings = await RWWTesting.find({ projectId });
+            const rwwTesting = await RWWTesting.find({ project });
+            res.status(200).json({
+                message: 'RWW Testing retrieved',
+                rwwTesting,
+            });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+
+    getAverage: async (req, res) => {
+        const { project } = req.params;
+        try {
+            const rwwTestings = await RWWTesting.find({ project });
             const totalScore = rwwTestings.reduce((acc, cur) => acc + cur.totalScore, 0);
             const responden = rwwTestings.length
             const average = totalScore / responden;

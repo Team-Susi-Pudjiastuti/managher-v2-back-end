@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const RWWTestingSchema = new mongoose.Schema({
-    projectId: {
+    project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
     },
@@ -9,18 +9,18 @@ const RWWTestingSchema = new mongoose.Schema({
     // Data Responden
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     gender: {
         type: String,
         enum: ['Laki-laki', 'Perempuan', 'Tidak mau memberi tau'],
-        required: true,
+        required: false,
     },
     // ubah sesuai kebutuhan
     activity: {
         type: String,
         enum: ['Mahasiswa', 'Ibu rumah tangga', 'Pekerja', 'Lainnya', 'Tidak mau memberi tau'],
-        required: true,
+        required: false,
     },
 
     // Data Testing
@@ -37,17 +37,5 @@ const RWWTestingSchema = new mongoose.Schema({
     //     default: 'not_started'
     // }
 }, { timestamps: true });
-
-RWWTestingSchema.pre('save', function (next) {
-    const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
-
-    const realScore = sum(this.real);
-    const winScore = sum(this.win);
-    const worthScore = sum(this.worth);
-
-    this.totalScore = realScore + winScore + worthScore;
-
-    next();
-});
 
 module.exports = mongoose.model('rww_testing', RWWTestingSchema);
