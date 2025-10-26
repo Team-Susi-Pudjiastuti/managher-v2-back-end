@@ -11,6 +11,10 @@ const RWWTestingSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    age: {
+        type: Number,
+        required: false,
+    },
     gender: {
         type: String,
         enum: ['Laki-laki', 'Perempuan', 'Tidak mau memberi tau'],
