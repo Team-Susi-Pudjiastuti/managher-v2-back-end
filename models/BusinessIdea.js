@@ -29,7 +29,11 @@ const mongoose = require('mongoose');
     solutionOffered: {
         type: String,
         required: false,
-    }
+    },
+    uniqueValueProposition: {
+        type: String,
+        required: false,
+    },
 }, {
     timestamps: true,
 });
