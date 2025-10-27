@@ -1,36 +1,39 @@
-const BrandIdSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+
+const BrandIdentitySchema = new mongoose.Schema({
     project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
-        required: true,
+        required: false,
     },
     logo: {
         type: String,
-        required: true,
+        required: false,
     },
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     tagline: {
         type: String,
-        required: true,
+        required: false,
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
     vision: {
         type: String,
-        required: true,
+        required: false,
     },
     mission: {
         type: String,
-        required: true,
+        required: false,
     },
     color: {
         type: String,
-        required: true,
+        required: false,
     },
-});
-module.exports = mongoose.model('brand_identity', BrandIdSchema);
+}, { timestamps: true });
+
+module.exports = mongoose.model('brand_identity', BrandIdentitySchema);

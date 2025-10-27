@@ -4,28 +4,32 @@ const ProductConceptSchema = new mongoose.Schema({
     project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
-        required: true,
+        required: false,
     },
     name: {
         type: String, 
-        required: true,
+        required: false,
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
-    feature: {
+    feature: [{
         type: Array,
-        required: true,
-    },
-    benefit: {
+        required: false,
+    }],
+    benefit: [{
         type: Array,
-        required: true,
-    },
+        required: false,
+    }],
     price: {
         type: Number,
-        required: true,
+        required: false,
     },
-});
+    unfairAdvantage: {
+        type: String,
+        required: false,
+    },
+}, { timestamps: true });
 
 module.exports = mongoose.model('product_concept', ProductConceptSchema);

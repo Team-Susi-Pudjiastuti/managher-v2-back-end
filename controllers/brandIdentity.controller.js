@@ -1,4 +1,4 @@
-const brandIdentity = require('../models/brandIdentity.model');
+const BrandIdentity = require('../models/BrandIdentity');
 
 module.exports = {
     updateBrandIdentity: async (req, res) => {
@@ -27,7 +27,7 @@ module.exports = {
     getBrandIdentity: async (req, res) => {
         const { project } = req.params;
         try {
-            const brandIdentity = await BrandIdentity.find(project);
+            const brandIdentity = await BrandIdentity.find({project});
             res.status(200).json({
                 message: 'Brand Identity found',
                 brandIdentity,
