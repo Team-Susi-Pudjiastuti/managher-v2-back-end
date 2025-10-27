@@ -2,13 +2,13 @@ const ProductConcept = require('../models/ProductConcept');
 
 module.exports = {
     createProductConcept: async (req, res) => {
-        const { project, logo, name, tagline, description, vision, mission, color } = req.body;
+        const { project, logo, name, description, feature, benefit, price } = req.body;
         const productConcept = new ProductConcept({
             project,
             logo,
             name,
             description,
-            features,
+            feature,
             benefit,
             price
         });
@@ -18,14 +18,13 @@ module.exports = {
 
     updateProductConcept: async (req, res) => {
         const { id } = req.params;
-        const { project, logo, name, tagline, description, vision, mission, color } = req.body;
+        const { name, description, feature, benefit, price } = req.body;
         try {
             const productConcept = await ProductConcept.findByIdAndUpdate(id, {
-                project,
-                logo,
+                //logo,
                 name,
                 description,
-                features,
+                feature,
                 benefit,
                 price
             }, { new: true });
