@@ -6,6 +6,9 @@ const RWWTesting = require('../models/RWWTesting');
 const ProductConcept = require('../models/ProductConcept');
 const BrandIdentity = require('../models/BrandIdentity');
 const LeanCanvas = require('../models/LeanCanvas');
+const Prototype = require('../models/Prototype');
+const BetaTesting = require('../models/BetaTesting');
+const LaunchProduct = require('../models/LaunchProduct');
 
 module.exports = {
     createProject: async (req, res) => {
@@ -89,6 +92,12 @@ const createProjectPhase = async (projectId) => {
         solution: productConcept._id,           
         unfairAdvantage: productConcept._id,
      });
+    const prototype = await Prototype.create({ 
+        project: projectId,
+        productConcept: productConcept._id,
+     });
+    const betaTesting = await BetaTesting.create({ project: projectId });
+    const launchProduct = await LaunchProduct.create({ project: projectId });
 
     const levels = [
         {
@@ -142,30 +151,36 @@ const createProjectPhase = async (projectId) => {
                 entity_ref: leanCanvas._id,
             }],
         },
-        // {
-        //     name: 'beta_testing',
-        //     order: 5,
-        //     description: 'Beta Testing',
-        //     entities: [{
-        //         entity_type: 'beta_testing',
-        //     }],
-        // },
-        // {
-        //     name: 'mvp_image',
-        //     order: 6,
-        //     description: 'MVP Image',
-        //     entities: [{
-        //         entity_type: 'mvp_image',
-        //     }],
-        // },
-        // {
-        //     name: 'launch_preparation',
-        //     order: 7,
-        //     description: 'Launch Preparation',
-        //     entities: [{
-        //         entity_type: 'launch_preparation',
-        //     }],
-        // },
+        {
+            project: projectId,
+            name: 'prototype',
+            order: 6,
+            description: 'Prototype',
+            entities: [{
+                entity_type: 'prototype',
+                entity_ref: prototype._id,
+            }],
+        },
+        {
+            project: projectId,
+            name: 'beta_testing',
+            order: 5,
+            description: 'Beta Testing',
+            entities: [{
+                entity_type: 'beta_testing',
+                entity_ref: betaTesting._id,
+            }],
+        },
+        {
+            project: projectId,
+            name: 'launch_preparation',
+            order: 7,
+            description: 'Launch Preparation',
+            entities: [{
+                entity_type: 'launch_preparation',
+                entity_ref: launchProduct._id,
+            }],
+        },
     ].map(level => ({ ...level, phase: planPhase._id }));
 
     const planLevels = await Level.insertMany(levels);
