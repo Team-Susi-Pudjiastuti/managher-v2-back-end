@@ -21,7 +21,7 @@ router.use('/api/business-idea', businessIdeaRoutes);
 router.use('/api/rww-testing', rwwTestingRoutes);
 router.use('/api/product-concept', productConceptRoutes);
 router.use('/api/brand-identity', brandIdentityRoutes);
-router.use('/spapi/lean-canvas', leanCanvasRoutes);
+router.use('/api/lean-canvas', leanCanvasRoutes);
 // router.use('/mvp', mvpRoutes);
 // router.use('/betaTesting', betaTestingRoutes);
 // router.use('/launchProduct', launchProductRoutes);

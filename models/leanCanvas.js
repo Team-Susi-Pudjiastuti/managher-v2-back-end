@@ -4,49 +4,49 @@ const LeanCanvasSchema = new mongoose.Schema({
     project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
-        required: true,
+        required: false,
     },
     problem: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'BusinessIdea',
-        required: true,
+        ref: 'business_idea',
+        required: false,
     },
     customerSegment: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'BusinessIdea',
-        required: true,
+        ref: 'business_idea',
+        required: false,
     },
     uniqueValueProposition: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'BusinessIdea',
-        required: true,
+        ref: 'business_idea',
+        required: false,
     },
     solution: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ProductConcept',
-        required: true,
+        ref: 'product_concept',
+        required: false,
     },
     unfairAdvantage: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ProductConcept',
-        required: true,
+        ref: 'product_concept',
+        required: false,
     },
     keyMetrics: {
         type: String,
-        required: true,
+        required: false,
     },
     revenueStreams: {
         type: String,
-        required: true,
+        required: false,
     },
     costStructure: {
         type: String,
-        required: true,
+        required: false,
     },
     channels: {
         type: String,
-        required: true,
+        required: false,
     },
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('lean_canvas', LeanCanvasSchema);
