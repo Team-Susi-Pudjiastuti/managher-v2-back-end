@@ -3,12 +3,15 @@ const Phase = require('../models/Phase');
 const Level = require('../models/Level');
 const BusinessIdea = require('../models/BusinessIdea');
 const RWWTesting = require('../models/RWWTesting');
+const ProductConcept = require('../models/ProductConcept');
+const BrandIdentity = require('../models/BrandIdentity');
+const LeanCanvas = require('../models/LeanCanvas');
 
 module.exports = {
     createProject: async (req, res) => {
         const { user, title } = req.body;
         try {
-             await Project.create({ user, title });
+            const newProject = await Project.create({ user, title });
 
             const updatedProject = await createProjectPhase(newProject._id);
 
@@ -31,7 +34,7 @@ module.exports = {
                 populate: {
                     path: 'levels',
                     populate: {
-                        path: 'entities.entity_ref'
+                        path: 'entities.entity_ref',
                 }
                 }
             })
@@ -76,6 +79,16 @@ const createProjectPhase = async (projectId) => {
 
     const businessIdea = await BusinessIdea.create({ project: projectId });
     const rww = await RWWTesting.create({ project: projectId });
+    const productConcept = await ProductConcept.create({ project: projectId });
+    const brandIdentity = await BrandIdentity.create({ project: projectId });
+    const leanCanvas = await LeanCanvas.create({ 
+        project: projectId,
+        problem: businessIdea._id,               
+        customerSegment: businessIdea._id,     
+        uniqueValueProposition: businessIdea._id,
+        solution: productConcept._id,           
+        unfairAdvantage: productConcept._id,
+     });
 
     const levels = [
         {
@@ -100,24 +113,35 @@ const createProjectPhase = async (projectId) => {
             }],
         },
         {
+            project: projectId,
             name: 'product_concept',
             order: 3,
             description: 'Product & Brand',
             entities: [{
                 entity_type: 'product_concept',
-            },
-            {
-                entity_type: 'brand_identity',
+                entity_ref: productConcept._id,
             }],
         },
-        // {
-        //     name: 'lean_canvas',
-        //     order: 4,
-        //     description: 'Lean Canvas',
-        //     entities: [{
-        //         entity_type: 'lean_canvas',
-        //     }],
-        // },
+        {
+            project: projectId,
+            name: 'brand_identity',
+            order: 4,
+            description: 'Brand Identity',
+            entities: [{
+                entity_type: 'brand_identity',
+                entity_ref: brandIdentity._id,
+            }],
+        },
+        {
+            project: projectId,
+            name: 'lean_canvas',
+            order: 4,
+            description: 'Lean Canvas',
+            entities: [{
+                entity_type: 'lean_canvas',
+                entity_ref: leanCanvas._id,
+            }],
+        },
         // {
         //     name: 'beta_testing',
         //     order: 5,

@@ -26,6 +26,10 @@ const ProductConceptSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    unfairAdvantage: {
+        type: String,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('product_concept', ProductConceptSchema);
