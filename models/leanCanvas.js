@@ -16,7 +16,7 @@ const LeanCanvasSchema = new mongoose.Schema({
         ref: 'business_idea',
         required: false,
     },
-    uniqueValueProposition: {
+    uniqueValuePropositionId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'business_idea',
         required: false,
