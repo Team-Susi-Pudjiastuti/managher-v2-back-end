@@ -1,20 +1,36 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 module.exports = {
     register: async (req, res) => {
         const { name, username, email, password } = req.body;
-
-        const findUser = await User.findOne({ email });
-        if (findUser) {
-            return res.status(400).json({ message: 'Email already registered' });
-        }
-        const findUsername = await User.findOne({ username });
-        if (findUsername) {
-            return res.status(400).json({ message: 'Username already registered' });
-        }
-
         try {
-            const newUser = await User.create({ name, username, email, password });
+            if (!name || !username || !email || !password) {
+                return res.status(400).json({ message: 'All fields are required' });
+            }
+    
+            if (password.length < 6) {
+                return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+            }
+
+            if (!/^[a-zA-Z0-9]+$/.test(username)) {
+                return res.status(400).json({ message: 'Username can only contain letters and numbers' });
+            }
+
+            const findUser = await User.findOne({ email });
+            if (findUser) {
+                return res.status(400).json({ message: 'Email already registered' }); 
+            }
+
+            const findUsername = await User.findOne({ username });
+            if (findUsername) {
+                return res.status(400).json({ message: 'Username already registered' });
+            }
+
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(password, salt);
+            
+            const newUser = await User.create({ name, username, email, password: hash });
             res.status(201).json(
                 { 
                     message: 'User registered successfully', 
@@ -33,9 +49,12 @@ module.exports = {
             if (!findUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
-            if (findUser.password !== password) {
+
+            const isPasswordValid = bcrypt.compareSync(password, findUser.password);
+            if (!isPasswordValid) {
                 return res.status(400).json({ message: 'Invalid password' });
             }
+            
             res.status(200).json({ message: 'Login successful', data: { username: findUser.username, email: findUser.email } });
         } catch (error) {
             res.status(400).json({ message: error.message });
