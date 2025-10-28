@@ -21,7 +21,7 @@ const LevelSchema = new mongoose.Schema({
     entities: [{
         entity_type: {
             type: String,
-            enum: ['business_idea', 'rww_testing', 'product_concept', 'brand_identity', 'lean_canvas', 'beta_testing', 'mvp_image', 'launch_preparation'],
+            enum: ['business_idea', 'rww_testing', 'product_concept', 'brand_identity', 'lean_canvas', 'beta_testing', 'prototype', 'launch_product'],
             required: true
         },
         entity_ref: {
