@@ -7,7 +7,7 @@ module.exports = {
         const leanCanvas = await LeanCanvas.findByIdAndUpdate(id, {
             problem,
             customerSegment,
-            uniqueValuePropotion,
+            uniqueValuePropotionId,
             solution,
             unfairAdvantage,
             keyMetrics,
@@ -25,8 +25,8 @@ module.exports = {
             populate( [
                     { path: 'problem', select: 'problemSolved' },
                     { path: 'customerSegment', select: 'marketPotential' },
-                    { path: 'uniqueValueProposition', select: 'uniqueValueProposition' },
-                    { path: 'solution', select: 'productFeatures' },
+                    { path: 'uniqueValuePropositionId', select: 'uniqueValueProposition' },
+                    { path: 'solution', select: 'name' },
                     { path: 'unfairAdvantage', select: 'unfairAdvantage' },
                 ]
             );
