@@ -88,7 +88,7 @@ const createProjectPhase = async (projectId) => {
         project: projectId,
         problem: businessIdea._id,               
         customerSegment: businessIdea._id,     
-        uniqueValueProposition: businessIdea._id,
+        uniqueValuePropositionId: businessIdea._id,
         solution: productConcept._id,           
         unfairAdvantage: productConcept._id,
      });
@@ -96,8 +96,17 @@ const createProjectPhase = async (projectId) => {
         project: projectId,
         productConcept: productConcept._id,
      });
-    const betaTesting = await BetaTesting.create({ project: projectId });
-    const launchProduct = await LaunchProduct.create({ project: projectId });
+    const betaTesting = await BetaTesting.create({ 
+        project: projectId,
+        prototypeId: prototype._id,
+    });
+    const launchProduct = await LaunchProduct.create({ 
+        project: projectId,
+        productConcept: productConcept._id,
+        brand_name: brandIdentity._id,
+        brand_tagline: brandIdentity._id,
+        launch_channel: brandIdentity._id,
+    });
 
     const levels = [
         {
@@ -173,11 +182,11 @@ const createProjectPhase = async (projectId) => {
         },
         {
             project: projectId,
-            name: 'launch_preparation',
+            name: 'launch_product',
             order: 7,
-            description: 'Launch Preparation',
+            description: 'Launch Product',
             entities: [{
-                entity_type: 'launch_preparation',
+                entity_type: 'launch_product',
                 entity_ref: launchProduct._id,
             }],
         },
