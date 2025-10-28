@@ -18,7 +18,7 @@ module.exports = {
 
     updateBusinessIdea: async (req, res) => {
         const id = req.params.id;
-        const { idea, description, category, problemSolved, solutionOffered, marketPotential } = req.body;
+        const { idea, description, category, problemSolved, solutionOffered, marketPotential, uniqueValueProposition } = req.body;
         try {
             const businessIdea = await BusinessIdea.findByIdAndUpdate(id, {
                 idea,
@@ -27,6 +27,7 @@ module.exports = {
                 problemSolved,
                 solutionOffered,
                 marketPotential,
+                uniqueValueProposition,
             }, { new: true });
             
             if (!businessIdea) {
