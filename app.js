@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const allRoutes = require('./routes/index');
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT;
 
 app.use(express.json());
 const connectDB = require('./config/db');
