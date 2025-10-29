@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const allRoutes = require('./routes/index');
 const port = process.env.PORT;
+const connectDB = require('./config/db');
 
 app.use(express.json());
-const connectDB = require('./config/db');
 connectDB();
 
 app.use(allRoutes)
