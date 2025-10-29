@@ -11,6 +11,30 @@ const BetaTesting = require('../models/BetaTesting');
 const LaunchProduct = require('../models/LaunchProduct');
 
 module.exports = {
+    getAllProjects: async (req, res) => {
+        try {
+            const projects = await Project.find({ user: req.user.id })
+            .populate('phases');
+            res.status(200).json({
+                message: 'Projects retrieved successfully',
+                data: projects
+            });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+    getProjectById: async (req, res) => {
+        try {
+            const project = await Project.findById(req.params.id)
+            .populate('phases');
+            if (!project) {
+                return res.status(404).json({ message: 'Project not found' });
+            }
+            res.status(200).json(project);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
     createProject: async (req, res) => {
         const { user, title } = req.body;
         try {
@@ -28,20 +52,8 @@ module.exports = {
             res.status(400).json({ message: error.message });
         }
     },
+    }
 
-    getProjectById: async (req, res) => {
-        try {
-            const project = await Project.findById(req.params.id)
-            .populate('phases');
-            if (!project) {
-                return res.status(404).json({ message: 'Project not found' });
-            }
-            res.status(200).json(project);
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
-}
 
 const createProjectPhase = async (projectId) => {
     const phases = await Phase.insertMany([
