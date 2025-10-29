@@ -55,7 +55,12 @@ module.exports = {
                 return res.status(400).json({ message: 'Invalid password' });
             }
             
-            res.status(200).json({ message: 'Login successful', data: { username: findUser.username, email: findUser.email } });
+            res.status(200).json({ 
+                message: 'Login successful', 
+                data: { 
+                    id: findUser._id,
+                    username: findUser.username, 
+                    email: findUser.email } });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
