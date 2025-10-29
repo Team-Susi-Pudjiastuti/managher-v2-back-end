@@ -3,7 +3,7 @@ const LeanCanvas = require('../models/LeanCanvas');
 module.exports = {
     updateLeanCanvas: async (req, res) => {
         const { id } = req.params;
-        const { problem, customerSegment, uniqueValuePropotion, solution, unfairAdvantage, keyMetrics, revenueStreams, costStructure, channels } = req.body;
+        const { problem, customerSegment, uniqueValuePropotionId, solution, unfairAdvantage, keyMetrics, revenueStreams, costStructure, channels } = req.body;
         const leanCanvas = await LeanCanvas.findByIdAndUpdate(id, {
             problem,
             customerSegment,

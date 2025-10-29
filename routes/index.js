@@ -18,7 +18,7 @@ const launchProductRoutes = require('./launchProduct.router');
 router.use('/api/', userRoutes);
 router.use('/api/project', projectRoutes);
 router.use('/api/business-idea', businessIdeaRoutes);
-router.use('/api/rww-testing', rwwTestingRoutes);
+// router.use('/api/rww-testing', rwwTestingRoutes);
 router.use('/api/product-concept', productConceptRoutes);
 router.use('/api/brand-identity', brandIdentityRoutes);
 router.use('/api/lean-canvas', leanCanvasRoutes);
