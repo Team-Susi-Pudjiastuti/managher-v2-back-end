@@ -16,12 +16,12 @@ module.exports = {
         try {
             const newProject = await Project.create({ user, title });
 
-            const updatedProject = await createProjectPhase(newProject._id);
+            await createProjectPhase(newProject._id);
 
             res.status(201).json(
                 {
                     message: 'Project created successfully',
-                    project: updatedProject
+                    project: newProject
                 });
 
         } catch (error) {
@@ -32,15 +32,7 @@ module.exports = {
     getProjectById: async (req, res) => {
         try {
             const project = await Project.findById(req.params.id)
-            .populate({
-                path: 'phases',
-                populate: {
-                    path: 'levels',
-                    populate: {
-                        path: 'entities.entity_ref',
-                }
-                }
-            })
+            .populate('phases');
             if (!project) {
                 return res.status(404).json({ message: 'Project not found' });
             }
@@ -80,33 +72,41 @@ const createProjectPhase = async (projectId) => {
     $push: { phases: { $each: phases.map(p => p._id) }}
     });
 
-    const businessIdea = await BusinessIdea.create({ project: projectId });
-    const rww = await RWWTesting.create({ project: projectId });
-    const productConcept = await ProductConcept.create({ project: projectId });
-    const brandIdentity = await BrandIdentity.create({ project: projectId });
-    const leanCanvas = await LeanCanvas.create({ 
-        project: projectId,
-        problem: businessIdea._id,               
-        customerSegment: businessIdea._id,     
-        uniqueValuePropositionId: businessIdea._id,
-        solution: productConcept._id,           
-        unfairAdvantage: productConcept._id,
-     });
-    const prototype = await Prototype.create({ 
-        project: projectId,
-        productConcept: productConcept._id,
-     });
-    const betaTesting = await BetaTesting.create({ 
-        project: projectId,
-        prototypeId: prototype._id,
-    });
-    const launchProduct = await LaunchProduct.create({ 
-        project: projectId,
-        productConcept: productConcept._id,
-        brand_name: brandIdentity._id,
-        brand_tagline: brandIdentity._id,
-        launch_channel: brandIdentity._id,
-    });
+    const [businessIdea, rww, productConcept, brandIdentity] = await Promise.all([
+        BusinessIdea.create({ project: projectId }),
+        RWWTesting.create({ project: projectId }),
+        ProductConcept.create({ project: projectId }),
+        BrandIdentity.create({ project: projectId }),
+    ]);
+
+    const [leanCanvas, prototype] = await Promise.all([
+        LeanCanvas.create({ 
+            project: projectId,
+            problem: businessIdea._id, 
+            customerSegment: businessIdea._id,     
+            uniqueValuePropositionId: businessIdea._id,
+            solution: productConcept._id,           
+            unfairAdvantage: productConcept._id,
+        }),
+        Prototype.create({ 
+            project: projectId,
+            productConcept: productConcept._id,
+        })
+    ]);
+
+    const [betaTesting, launchProduct] = await Promise.all([
+        BetaTesting.create({ 
+            project: projectId,
+            prototypeId: prototype._id,
+        }),
+        LaunchProduct.create({ 
+            project: projectId,
+            productConcept: productConcept._id,
+            brand_name: brandIdentity._id,
+            brand_tagline: brandIdentity._id,
+            launch_channel: brandIdentity._id,
+        })
+    ]);
 
     const levels = [
         {
@@ -199,13 +199,5 @@ const createProjectPhase = async (projectId) => {
     }, { new: true });
 
     return await Project.findById(projectId)
-    .populate({
-        path: 'phases',
-        populate: {
-            path: 'levels',
-            populate: {
-                path: 'entities.entity_ref'
-            }
-        }
-    });
+    .populate('phases');
 }
