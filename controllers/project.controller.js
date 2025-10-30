@@ -13,8 +13,9 @@ const LaunchProduct = require('../models/LaunchProduct');
 module.exports = {
     getAllProjects: async (req, res) => {
         try {
-            const projects = await Project.find({ user: req.user.id })
-            .populate('phases');
+            const { userId } = req.params;
+            const projects = await Project.find({ user: userId })
+            .populate('user', 'name email');
             res.status(200).json({
                 message: 'Projects retrieved successfully',
                 data: projects
