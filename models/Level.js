@@ -1,38 +1,46 @@
 const mongoose = require('mongoose');
 
 const LevelSchema = new mongoose.Schema({
+    project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Project',
+        required: false
+    },
     phase: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Phase',
-        required: true
+        required: false
     },
-    order: {
+    title: {
+        type: String,
+        required: false
+    },
+    xp: {
         type: Number,
-        required: true
+        default: 10
     },
-    name: {
+    icon: {
         type: String,
-        required: true
+        required: false
     },
-    description: {
+    badge: {
         type: String,
-        required: true
+        required: false
     },
     entities: [{
         entity_type: {
             type: String,
             enum: ['business_idea', 'rww_testing', 'product_concept', 'brand_identity', 'lean_canvas', 'beta_testing', 'prototype', 'launch_product'],
-            required: true
+            required: false
         },
         entity_ref: {
             type: mongoose.Schema.Types.ObjectId,
             refPath: 'entities.entity_type'
         },
     }],
-    status: {
-        type: String,
-        enum: ['locked', 'in_progress', 'completed'],
-        default: 'locked'
+    completed: {
+        type: Boolean,
+        default: false
     },
 }, { timestamps: true });
 

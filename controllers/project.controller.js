@@ -24,27 +24,35 @@ module.exports = {
             res.status(400).json({ message: error.message });
         }
     },
+
     getProjectById: async (req, res) => {
         try {
-            const project = await Project.findById(req.params.id)
+            const projectId = req.params.id;
+            const project = await Project.findById(projectId)
             .populate({
                 path: 'phases',
                 populate: {
-                    path: 'levels',
-                    model: 'Level',
+                path: 'levels',
+                model: 'Level'
                 }
             });
+
             if (!project) {
-                return res.status(404).json({ message: 'Project not found' });
+            return res.status(404).json({ message: 'Project not found' });
             }
-            res.status(200).json(project);
+
+            res.status(200).json({
+                message: 'Project retrieved successfully',
+                data: project
+            });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
     },
+
     createProject: async (req, res) => {
-        const { user, title } = req.body;
         try {
+            const { user, title } = req.body;
             const newProject = await Project.create({ user, title });
 
             await createProjectPhase(newProject._id);
@@ -58,9 +66,9 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
-    },
     }
 
+}
 
 const createProjectPhase = async (projectId) => {
     const phases = await Phase.insertMany([
@@ -86,6 +94,8 @@ const createProjectPhase = async (projectId) => {
     ]);
     
     const planPhase = phases.find(phase => phase.name === 'plan');
+    const sellPhase = phases.find(phase => phase.name === 'sell');
+    const scaleUpPhase = phases.find(phase => phase.name === 'scale_up');
 
     await Project.findByIdAndUpdate(projectId, {
     $push: { phases: { $each: phases.map(p => p._id) }}
@@ -127,95 +137,164 @@ const createProjectPhase = async (projectId) => {
         })
     ]);
 
-    const levels = [
+    const planLevels =  await Level.insertMany([
         {
             project: projectId,
-            name: 'business_idea',
-            order: 1,
-            description: 'Business Idea',
+            title: "Ide Generator", 
+            phase: planPhase._id,
+            icon: "Lightbulb",
+            xp: 20,
+            badge: "Percikan Kreatif",
             entities: [{
                 entity_type: 'business_idea',
                 entity_ref: businessIdea._id,
             }],
-            status: 'in_progress',
+            path: 'level_1_idea',
         },
         {
             project: projectId, 
-            name: 'rww_testing',
-            order: 2,
-            description: 'RWW Testing',
+            title: "RWW Testing", 
+            phase: planPhase._id,
+            icon: "CheckCircle",
+            xp: 20,
+            badge: "Pengambil Keputusan",
             entities: [{
                 entity_type: 'rww_testing',
                 entity_ref: rww._id,
             }],
+            path: 'level_2_rww',
         },
         {
             project: projectId,
-            name: 'product_concept',
-            order: 3,
-            description: 'Product & Brand',
-            entities: [{
-                entity_type: 'product_concept',
-                entity_ref: productConcept._id,
-            }],
-        },
-        {
-            project: projectId,
-            name: 'brand_identity',
-            order: 4,
-            description: 'Brand Identity',
+            title: "Brand Identity", 
+            phase: planPhase._id,
+            icon: "Palette",
+            xp: 20,
+            badge: "Pencipta Gaya",
             entities: [{
                 entity_type: 'brand_identity',
                 entity_ref: brandIdentity._id,
             }],
+            path: 'level_3_product_brand',
         },
         {
             project: projectId,
-            name: 'lean_canvas',
-            order: 4,
-            description: 'Lean Canvas',
+            title: "Lean Canvas", 
+            phase: planPhase._id,
+            icon: "FileText",
+            xp: 30,
+            badge: "Pemikir Strategis",
             entities: [{
                 entity_type: 'lean_canvas',
                 entity_ref: leanCanvas._id,
             }],
+            path: 'level_4_lean_canvas',
         },
         {
             project: projectId,
-            name: 'prototype',
-            order: 6,
-            description: 'Prototype',
-            entities: [{
+            title: "Prototype", 
+            phase: planPhase._id,
+            icon: "Box",
+            xp: 20,
+            badge: "Ratu Prototipe",
+            entities: [
+            {
                 entity_type: 'prototype',
                 entity_ref: prototype._id,
+            },
+            { 
+                entity_type: 'product_concept',
+                entity_ref: productConcept._id,
             }],
+            path: 'level_5_MVP',
         },
         {
             project: projectId,
-            name: 'beta_testing',
-            order: 5,
-            description: 'Beta Testing',
+            title: "Beta Testing", 
+            phase: planPhase._id,
+            icon: "Users",
+            xp: 30,
+            badge: "Penguji Kualitas",
             entities: [{
                 entity_type: 'beta_testing',
                 entity_ref: betaTesting._id,
             }],
+            path: 'level_6_beta_testing',
         },
         {
             project: projectId,
-            name: 'launch_product',
-            order: 7,
-            description: 'Launch Product',
+            title: "Launch Product", 
+            phase: planPhase._id,
+            icon: "Rocket",
+            xp: 30,
+            badge: "Si Pemberani",
             entities: [{
                 entity_type: 'launch_product',
                 entity_ref: launchProduct._id,
             }],
+            path: 'level_7_launch',
         },
-    ].map(level => ({ ...level, phase: planPhase._id }));
-
-    const planLevels = await Level.insertMany(levels);
+    ]);
 
     await Phase.findByIdAndUpdate(planPhase._id, {
         $push: { levels: planLevels.map(l => l._id) }
     }, { new: true });
+
+    // SELL PHASE
+    const sellLevels = await Level.insertMany([
+    {
+        project: projectId,
+        title: "Product",
+        phase: sellPhase._id,
+        icon: "Package",
+        xp: 20,
+        badge: "Ahli Produk",
+    },
+    {
+        project: projectId,
+        title: "Customer",
+        phase: sellPhase._id,
+        icon: "User",
+        xp: 30,
+        badge: "Penghubung Hebat",
+    },
+    {
+        project: projectId,
+        title: "Order",
+        phase: sellPhase._id,
+        icon: "ShoppingBag",
+        xp: 40,
+        badge: "Penjual Andal",
+    },
+    {
+        project: projectId,
+        title: "Laba Rugi",
+        phase: sellPhase._id,
+        icon: "BarChart3",
+        xp: 40,
+        badge: "Pengatur Keuangan",
+    }
+    ]);
+
+    await Phase.findByIdAndUpdate(sellPhase._id, {
+    $push: { levels: sellLevels.map(l => l._id) }
+    });
+
+    // SCALE UP PHASE
+    const scaleUpLevels = await Level.insertMany([
+    {
+        project: projectId,
+        title: "Scale Up",
+        phase: scaleUpPhase._id,
+        icon: "TrendingUp",
+        xp: 50,
+        badge: "Juara Pertumbuhan",
+    }
+    ]);
+
+    await Phase.findByIdAndUpdate(scaleUpPhase._id, {
+    $push: { levels: scaleUpLevels.map(l => l._id) }
+    });
 
     return await Project.findById(projectId)
     .populate('phases');
