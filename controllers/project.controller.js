@@ -28,7 +28,13 @@ module.exports = {
         try {
             const projectId = req.params.id;
             const project = await Project.findById(projectId)
-            .populate('phases');
+            .populate({
+                path: 'phases',
+                populate: {
+                path: 'levels',
+                model: 'Level'
+                }
+            });
 
             if (!project) {
             return res.status(404).json({ message: 'Project not found' });
