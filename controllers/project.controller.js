@@ -14,8 +14,7 @@ module.exports = {
     getAllProjects: async (req, res) => {
         try {
             const { userId } = req.params;
-            const projects = await Project.find({ user: userId })
-            .populate('user', 'name email');
+            const projects = await Project.find({ user: userId });
             res.status(200).json({
                 message: 'Projects retrieved successfully',
                 data: projects
