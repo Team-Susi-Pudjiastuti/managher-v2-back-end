@@ -4,6 +4,9 @@ const router = express.Router();
 // const authRoutes = require('./auth.router');
 const userRoutes = require('./user.router');
 const projectRoutes = require('./project.router');
+const phaseRoutes = require('./phase.router');
+const levelRoutes = require('./level.router');
+
 const businessIdeaRoutes = require('./businessIdea.router');
 const rwwTestingRoutes = require('./rwwTesting.router');
 const productConceptRoutes = require('./productConcept.router');
@@ -17,6 +20,9 @@ const launchProductRoutes = require('./launchProduct.router');
 // router.use('/auth', authRoutes);
 router.use('/api/', userRoutes);
 router.use('/api/project', projectRoutes);
+router.use('/api/phase', phaseRoutes);
+router.use('/api/level', levelRoutes);
+
 router.use('/api/business-idea', businessIdeaRoutes);
 router.use('/api/rww-testing', rwwTestingRoutes);
 router.use('/api/product-concept', productConceptRoutes);

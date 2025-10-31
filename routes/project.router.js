@@ -8,4 +8,5 @@ router.get('/detail/:id', projectController.getProjectById);
 // router.put('/:id', projectController.updateProject);
 // router.delete('/:id', projectController.deleteProject);
 
+
 module.exports = router;
