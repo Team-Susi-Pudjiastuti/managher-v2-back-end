@@ -30,7 +30,7 @@ router.use('/api/brand-identity', brandIdentityRoutes);
 router.use('/api/lean-canvas', leanCanvasRoutes);
 router.use('/api/prototype', prototypeRoutes);
 router.use('/api/beta-testing', betaTestingRoutes);
-router.use('/api/launch-product', launchProductRoutes);
+router.use('/api/launch', launchProductRoutes);
 
 
 

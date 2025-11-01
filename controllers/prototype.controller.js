@@ -2,16 +2,20 @@ const Prototype = require('../models/Prototype');
 
 module.exports = {
     createPrototype: async (req, res) => {
-        const { project, productConcept, image } = req.body;
         try {
+            const { project, name, description, feature, price, unfairAdvantage, image } = req.body;
             const prototype = await Prototype.create({
                 project,
-                productConcept,
+                name,
+                description,
+                feature,
+                price,
+                unfairAdvantage,
                 image,
             });
             res.status(201).json({
                 message: 'Prototype created',
-                prototype,
+                data: prototype,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -19,15 +23,17 @@ module.exports = {
     },
 
     updatePrototype: async (req, res) => {
-        const { id } = req.params;
-        const { image } = req.body;
         try {
+            const { id } = req.params;
+            const { name, description, image } = req.body;
             const prototype = await Prototype.findByIdAndUpdate(id, {
+                name,
+                description,
                 image,
             }, { new: true });
             res.status(200).json({
                 message: 'Prototype updated',
-                prototype,
+                data: prototype,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -35,10 +41,14 @@ module.exports = {
     },
 
     getPrototype: async (req, res) => {
-        const { project } = req.params;
         try {
+            const { project } = req.params;
             const prototype = await Prototype.find({ project }).
-            populate('productConcept');
+            populate([
+                { path: 'price', select: 'revenueStream' },
+                { path: 'feature', select: 'features' },
+                { path: 'unfairAdvantage', select: 'unfairAdvantage' },
+            ]);
             if (!prototype) {
                 return res.status(404).json({ message: 'Prototype not found' });
             }

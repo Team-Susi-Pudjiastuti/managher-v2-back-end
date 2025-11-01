@@ -2,8 +2,8 @@ const RWWTesting = require('../models/RWWTesting');
 
 module.exports = {
     createRWWTesting: async (req, res) => {
-        const { project, name, age, gender, activity, real, win, worth } = req.body;
         try {
+            const { project, name, age, gender, activity, real, win, worth } = req.body;
             const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
             const realScore = sum(real);
             const winScore = sum(win);
@@ -22,7 +22,7 @@ module.exports = {
             });
             res.status(200).json({
                 message: 'RWW Testing created',
-                rwwTesting,
+                data:rwwTesting,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -30,9 +30,9 @@ module.exports = {
     },
 
     updateRWWTesting: async (req, res) => {
-        const { id } = req.params;
-        const { project, name, age, gender, activity, real, win, worth } = req.body;
         try {
+            const { id } = req.params;
+            const { project, name, age, gender, activity, real, win, worth } = req.body;
             const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
             const realScore = sum(real);
             const winScore = sum(win);
@@ -51,7 +51,7 @@ module.exports = {
             }, { new: true });
             res.status(200).json({
                 message: 'RWW Testing updated',
-                rwwTesting,
+                data: rwwTesting,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -59,12 +59,12 @@ module.exports = {
     },
 
     getRWWTesting: async (req, res) => {
-        const { project } = req.params;
         try {
+            const { project } = req.params;
             const rwwTesting = await RWWTesting.find({ project });
             res.status(200).json({
                 message: 'RWW Testing retrieved',
-                rwwTesting,
+                data: rwwTesting,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });

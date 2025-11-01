@@ -11,6 +11,10 @@ const LevelSchema = new mongoose.Schema({
         ref: 'Phase',
         required: false
     },
+    order: {
+        type: Number,
+        required: false
+    },
     title: {
         type: String,
         required: false

@@ -7,7 +7,7 @@ const LeanCanvasSchema = new mongoose.Schema({
         required: false,
     },
     problem: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Mixed,
         ref: 'business_idea',
         required: false,
     },
@@ -23,28 +23,32 @@ const LeanCanvasSchema = new mongoose.Schema({
     },
     solution: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'product_concept',
+        ref: 'business_idea',
         required: false,
     },
     unfairAdvantage: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'product_concept',
+        ref: 'business_idea',
         required: false,
     },
     keyMetrics: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
     revenueStreams: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
     costStructure: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
     channels: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
 }, { timestamps: true })

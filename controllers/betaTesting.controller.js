@@ -2,8 +2,8 @@ const BetaTesting = require('../models/BetaTesting');
 
 module.exports = {
     createBetaTesting: async (req, res) => {
-        const { project, prototypeId, name, scale, comment } = req.body;
         try {
+            const { project, prototypeId, name, scale, comment } = req.body;
             const betaTesting = await BetaTesting.create({
                 project,
                 prototypeId,
@@ -11,25 +11,27 @@ module.exports = {
                 scale,
                 comment,
             });
-            res.status(201).json(betaTesting);
+            res.status(201).json({
+                message: 'Beta Testing created',
+                data: betaTesting,
+            });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
     },
 
     updateBetaTesting: async (req, res) => {
-        const { id } = req.params;
-        const { prototype, name, scale, comment } = req.body;
         try {
+            const { id } = req.params;
+            const { name, scale, comment } = req.body;
             const betaTesting = await BetaTesting.findByIdAndUpdate(id, {
-                prototype,
                 name,
                 scale,
                 comment,    
             }, { new: true });
             res.status(200).json({
                 message: 'Beta Testing updated',
-                betaTesting,
+                data: betaTesting,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -42,7 +44,7 @@ module.exports = {
             const betaTesting = await BetaTesting.find({ project });
             res.status(200).json({
                 message: 'Beta Testing found',
-                betaTesting,
+                data: betaTesting,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });

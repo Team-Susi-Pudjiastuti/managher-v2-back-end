@@ -2,13 +2,13 @@ const BusinessIdea = require('../models/BusinessIdea');
 
 module.exports = {
     getBusinessIdea: async (req, res) => {
-        const id = req.params.id;
         try {
+            const id = req.params.id;
             const businessIdea = await BusinessIdea.findById(id);
             res.status(200).json(
                 {
                     message: 'Business idea retrieved successfully',
-                    businessIdea,
+                    data: businessIdea,
                 }
             );
         } catch (error) {
@@ -17,23 +17,33 @@ module.exports = {
     },
 
     updateBusinessIdea: async (req, res) => {
-        const id = req.params.id;
-        const { idea, description, category, problemSolved, solutionOffered, marketPotential, uniqueValueProposition } = req.body;
         try {
+            const id = req.params.id;
+            const { idea, description, category, features, benefits, problemSolved, solutionOffered, marketPotential, uniqueValueProposition, unfairAdvantage, keyMetrics, revenueStream, costStructure, channel } = req.body;
             const businessIdea = await BusinessIdea.findByIdAndUpdate(id, {
                 idea,
                 description,
                 category,
+                features,
+                benefits,
                 problemSolved,
                 solutionOffered,
                 marketPotential,
                 uniqueValueProposition,
+                unfairAdvantage,
+                keyMetrics,
+                revenueStream,
+                costStructure,
+                channel,
             }, { new: true });
             
             if (!businessIdea) {
                 return res.status(404).json({ message: 'Business idea not found' });
             }
-            res.status(200).json(businessIdea);
+            res.status(200).json({
+                message: 'Business idea updated successfully',
+                data: businessIdea,
+            });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }

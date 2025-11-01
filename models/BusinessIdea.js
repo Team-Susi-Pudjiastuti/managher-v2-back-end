@@ -18,10 +18,14 @@ const mongoose = require('mongoose');
         enum: ['Makanan/Minuman', 'Jasa', 'Pakaian', 'Teknologi', 'Lainnya'],
         required: false,
     },
-    marketPotential: {
-        type: String,
+    features: [{
+        type: Array,
         required: false,
-    },
+    }],
+    benefits: [{
+        type: Array,
+        required: false,
+    }],
     problemSolved: {
         type: String,
         required: false,
@@ -30,7 +34,31 @@ const mongoose = require('mongoose');
         type: String,
         required: false,
     },
+    marketPotential: {
+        type: String,
+        required: false,
+    },
     uniqueValueProposition: {
+        type: String,
+        required: false,
+    },
+    unfairAdvantage: {
+        type: String,
+        required: false,
+    },
+    keyMetrics: {
+        type: String,
+        required: false,
+    },
+    revenueStream: {
+        type: String,
+        required: false,
+    },
+    costStructure: {
+        type: String,
+        required: false,
+    },
+    channel: {
         type: String,
         required: false,
     },

@@ -6,30 +6,21 @@ const LaunchProductSchema = new mongoose.Schema({
         ref: 'Project',
         required: false,
     },
-    launch_date: {
-        type: Date,
-        required: false,
-    },
-    productConcept: {
+    levels: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'product_concept',
+        ref: 'Level',
         required: false,
     },
-    brand_name: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'brand_identity',
-        required: false,
-    },
-    brand_tagline: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'brand_identity',
-        required: false,
-    },
-    launch_channel: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'lean_canvas',
-        required: false,
-    },
+    checklist: [{
+        title: {
+            type: String,
+            required: false,
+        },
+        completed: {
+            type: Boolean,
+            default: false,
+        },
+    }]
     
 }, { timestamps: true });
 

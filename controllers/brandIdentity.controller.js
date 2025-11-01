@@ -2,22 +2,19 @@ const BrandIdentity = require('../models/BrandIdentity');
 
 module.exports = {
     updateBrandIdentity: async (req, res) => {
-        const { id } = req.params;
-        const { project, logo, name, tagline, description, vision, mission, color } = req.body;
         try {
+            const { id } = req.params;
+            const { project, logo, name, tagline, color } = req.body;
             const brandIdentity = await BrandIdentity.findByIdAndUpdate(id, {
                 project,
                 logo,
                 name,
                 tagline,
-                description,
-                vision,
-                mission,
                 color,
             }, { new: true });
             res.status(200).json({
                 message: 'Brand Identity updated',
-                brandIdentity,
+                data: brandIdentity,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -30,7 +27,7 @@ module.exports = {
             const brandIdentity = await BrandIdentity.find({project});
             res.status(200).json({
                 message: 'Brand Identity found',
-                brandIdentity,
+                data: brandIdentity,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });

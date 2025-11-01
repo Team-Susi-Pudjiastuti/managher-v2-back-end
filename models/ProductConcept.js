@@ -14,20 +14,23 @@ const ProductConceptSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    feature: [{
-        type: Array,
+    feature: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
-    }],
-    benefit: [{
-        type: Array,
-        required: false,
-    }],
+    },
+    // benefit: [{
+    //     type: Array,
+    //     required: false,
+    // }],
     price: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
     unfairAdvantage: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
 }, { timestamps: true });

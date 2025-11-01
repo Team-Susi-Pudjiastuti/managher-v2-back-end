@@ -6,9 +6,31 @@ const PrototypeSchema = new mongoose.Schema({
         ref: 'Project',
         required: false,
     },
-    productConcept: {
+    name: {
+        type: String, 
+        required: false,
+    },
+    description: {
+        type: String,
+        required: false,
+    },
+    feature: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'product_concept',
+        ref: 'business_idea',
+        required: false,
+    },
+    // benefit: [{
+    //     type: Array,
+    //     required: false,
+    // }],
+    price: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
+        required: false,
+    },
+    unfairAdvantage: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'business_idea',
         required: false,
     },
     image: {

@@ -1,10 +1,13 @@
-const Level = require('../models/level.model');
+const Level = require('../models/Level');
 
 module.exports = {
     getLevels: async (req, res) => {
         try {
             const { projectId } = req.params;
-            const levels = await Level.find({ project: projectId });
+            const levels = await Level.find({ project: projectId }).
+            populate('phase', 'name').
+            populate('project', 'title');
+
             res.status(200).json(
                 { 
                     message: 'Levels retrieved', 

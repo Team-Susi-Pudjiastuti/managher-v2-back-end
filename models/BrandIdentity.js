@@ -18,18 +18,6 @@ const BrandIdentitySchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    description: {
-        type: String,
-        required: false,
-    },
-    vision: {
-        type: String,
-        required: false,
-    },
-    mission: {
-        type: String,
-        required: false,
-    },
     color: {
         type: String,
         required: false,
