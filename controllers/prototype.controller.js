@@ -54,7 +54,7 @@ module.exports = {
             }
             res.status(200).json({
                 message: 'Prototype found',
-                prototype,
+                data: prototype,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });

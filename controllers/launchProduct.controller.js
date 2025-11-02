@@ -27,7 +27,7 @@ module.exports = {
             }, { new: true });
             res.status(200).json({
                 message: 'Launch Product updated',
-                launchProduct,
+                data: launchProduct,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });

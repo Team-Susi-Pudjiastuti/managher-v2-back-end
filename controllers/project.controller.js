@@ -163,13 +163,14 @@ const createProjectPhase = async (projectId) => {
         LaunchProduct.create({ 
             project: projectId,
             levels: Level._id,
-            checkList: [
+            checklist: [
                 { title: "Check A"},
                 { title: "Check B"},
                 { title: "Check C"},
                 { title: "Check D"},
                 { title: "Check E"},
                 { title: "Check F"},
+                { title: "Check G"},
             ],
         })
     ]);
