@@ -22,9 +22,9 @@ module.exports = {
 
     updateBetaTesting: async (req, res) => {
         try {
-            const { id } = req.params;
+            const { project } = req.params;
             const { name, scale, comment } = req.body;
-            const betaTesting = await BetaTesting.findByIdAndUpdate(id, {
+            const betaTesting = await BetaTesting.findByIdAndUpdate(project, {
                 name,
                 scale,
                 comment,    

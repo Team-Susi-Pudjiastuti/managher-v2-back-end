@@ -2,9 +2,9 @@ const LaunchProduct = require('../models/LaunchProduct');
 
 module.exports = {
     getLaunchProduct: async (req, res) => {
-        const { id } = req.params;
+        const { project } = req.params;
         try {
-            const launchProduct = await LaunchProduct.findById(id).
+            const launchProduct = await LaunchProduct.findById(project).
             populate('levels');
             if (!launchProduct) {
                 return res.status(404).json({ message: 'Launch Product not found' });
@@ -19,10 +19,10 @@ module.exports = {
     },
 
     updateLaunchProduct: async (req, res) => {
-        const { id } = req.params;
+        const { project } = req.params;
         const { checklist } = req.body;
         try {
-            const launchProduct = await LaunchProduct.findByIdAndUpdate(id, {
+            const launchProduct = await LaunchProduct.findByIdAndUpdate(project, {
                 checklist,
             }, { new: true });
             res.status(200).json({

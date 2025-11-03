@@ -24,9 +24,9 @@ module.exports = {
 
     updatePrototype: async (req, res) => {
         try {
-            const { id } = req.params;
+            const { project } = req.params;
             const { name, description, image } = req.body;
-            const prototype = await Prototype.findByIdAndUpdate(id, {
+            const prototype = await Prototype.findByIdAndUpdate(project, {
                 name,
                 description,
                 image,
