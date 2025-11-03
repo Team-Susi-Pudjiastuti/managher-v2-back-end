@@ -46,6 +46,10 @@ const LevelSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    path: {
+        type: String,
+        required: false
+    }   
 }, { timestamps: true });
 
 module.exports = mongoose.model('Level', LevelSchema);

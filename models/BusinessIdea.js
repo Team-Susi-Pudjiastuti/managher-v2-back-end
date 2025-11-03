@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
     },
+    interest: {
+        type: String,
+        required: false,
+    },
     idea: {
         type: String,
         required: false,
