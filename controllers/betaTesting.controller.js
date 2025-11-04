@@ -1,53 +1,44 @@
+// controllers/betaTesting.controller.js
 const BetaTesting = require('../models/BetaTesting');
 
-module.exports = {
-    createBetaTesting: async (req, res) => {
-        try {
-            const { project, prototypeId, name, scale, comment } = req.body;
-            const betaTesting = await BetaTesting.create({
-                project,
-                prototypeId,
-                name,
-                scale,
-                comment,
-            });
-            res.status(201).json({
-                message: 'Beta Testing created',
-                data: betaTesting,
-            });
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
+exports.createOrUpdateBetaTesting = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const { responses } = req.body; // array responden
 
-    updateBetaTesting: async (req, res) => {
-        try {
-            const { project } = req.params;
-            const { name, scale, comment } = req.body;
-            const betaTesting = await BetaTesting.findByIdAndUpdate(project, {
-                name,
-                scale,
-                comment,    
-            }, { new: true });
-            res.status(200).json({
-                message: 'Beta Testing updated',
-                data: betaTesting,
-            });
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
+    let betaTesting = await BetaTesting.findOne({ project: projectId });
 
-    getBetaTesting: async (req, res) => {
-        const { project } = req.params;
-        try {
-            const betaTesting = await BetaTesting.find({ project });
-            res.status(200).json({
-                message: 'Beta Testing found',
-                data: betaTesting,
-            });
-        } catch (error) {
-            res.status(400).json({ message: error.message });
-        }
-    },
-}
+    if (betaTesting) {
+      // Update
+      betaTesting.responses = responses;
+      await betaTesting.save();
+    } else {
+      // Create
+      betaTesting = await BetaTesting.create({
+        project: projectId,
+        responses,
+      });
+    }
+
+    res.status(200).json({
+      message: 'Beta Testing updated',
+      data: betaTesting.responses,
+    });
+  } catch (error) {
+    console.error('Beta Testing error:', error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getBetaTesting = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const betaTesting = await BetaTesting.findOne({ project: projectId });
+    res.status(200).json({
+      message: 'Beta Testing found',
+      data: betaTesting ? betaTesting.responses : [],
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

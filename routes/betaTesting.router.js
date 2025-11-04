@@ -1,9 +1,10 @@
+// routes/betaTesting.routes.js
 const express = require('express');
 const betaTestingController = require('../controllers/betaTesting.controller');
 const router = express.Router();
 
-router.post('/', betaTestingController.createBetaTesting);
-router.put('/:project', betaTestingController.updateBetaTesting);
-router.get('/:project', betaTestingController.getBetaTesting);
+// Gunakan PUT untuk menyimpan array
+router.get('/:projectId', betaTestingController.getBetaTesting);
+router.put('/:projectId', betaTestingController.createOrUpdateBetaTesting);
 
 module.exports = router;
