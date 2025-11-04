@@ -1,7 +1,10 @@
 const BrandIdentity = require('../models/BrandIdentity');
+const cloudinary = require('../utils/cloudinary');
+const multer = require('../utils/multer');
+const upload = require('../utils/multer');
 
 module.exports = {
-    updateBrandIdentity: async (req, res) => {
+    updateBrandIdentity: (upload.single('logo'), async (req, res) => {
         try {
             const { id } = req.params;
             const { project, logoPreview, brandName, tagline, palette } = req.body;
@@ -19,7 +22,7 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
-    },
+    }),
 
     getBrandIdentity: async (req, res) => {
         const { project } = req.params;

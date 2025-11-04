@@ -1,6 +1,20 @@
 const BusinessIdea = require('../models/BusinessIdea');
 
 module.exports = {
+    // ✅ TAMBAHKAN FUNGSI BARU
+    getBusinessIdeaByProject: async (req, res) => {
+        try {
+            const { projectId } = req.params;
+            const businessIdea = await BusinessIdea.findOne({ project: projectId });
+            if (!businessIdea) {
+            return res.status(404).json({ message: 'Business Idea not found for this project' });
+            }
+            res.status(200).json({  businessIdea });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    }, 
+    
     getBusinessIdea: async (req, res) => {
         try {
             const id = req.params.id;

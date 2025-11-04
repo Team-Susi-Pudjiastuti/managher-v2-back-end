@@ -1,8 +1,8 @@
 const express = require('express');
-const leanCanvasController = require('../controllers/leanCanvas.controller');
 const router = express.Router();
+const leanCanvasController = require('../controllers/leanCanvas.controller');
 
-router.put('/:project', leanCanvasController.updateLeanCanvas);
-router.get('/:project', leanCanvasController.getLeanCanvas);
+router.get('/project/:projectId', leanCanvasController.getLeanCanvasByProject);
+router.put('/project/:projectId', leanCanvasController.updateLeanCanvasByProject);
 
 module.exports = router;
