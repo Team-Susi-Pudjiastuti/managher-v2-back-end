@@ -8,7 +8,7 @@ module.exports = {
             const realScore = sum(real);
             const winScore = sum(win);
             const worthScore = sum(worth);
-            const totalScore = realScore + winScore + worthScore;
+            const totalScore = (realScore + winScore + worthScore);
             const rwwTesting = await RWWTesting.create({
                 project,
                 name,
@@ -17,12 +17,15 @@ module.exports = {
                 activity,
                 real,
                 win,
-                worth,
-                totalScore
+                worth
             });
             res.status(200).json({
                 message: 'RWW Testing created',
                 data:rwwTesting,
+                realScore: realScore/3,
+                winScore: winScore/3,
+                worthScore: worthScore/3,
+                totalScore: totalScore/3
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -34,10 +37,11 @@ module.exports = {
             const { id } = req.params;
             const { project, name, age, gender, activity, real, win, worth } = req.body;
             const sum = arr => arr.reduce((a, b) => a + (b || 0), 0);
-            const realScore = sum(real);
-            const winScore = sum(win);
-            const worthScore = sum(worth);
-            const totalScore = realScore + winScore + worthScore;
+            const realScore = sum(real)/3;
+            const winScore = sum(win)/3;
+            const worthScore = sum(worth)/3;
+            const total = (realScore + winScore + worthScore)/3;
+            const totalScore = total.toFixed(2);
             const rwwTesting = await RWWTesting.findByIdAndUpdate(id, {
                 project,
                 name,
@@ -47,11 +51,14 @@ module.exports = {
                 real,
                 win,
                 worth,
-                totalScore
             }, { new: true });
             res.status(200).json({
                 message: 'RWW Testing updated',
                 data: rwwTesting,
+                realScore: realScore.toFixed(2),
+                winScore: winScore.toFixed(2),
+                worthScore: worthScore.toFixed(2),
+                totalScore,
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -80,11 +87,11 @@ module.exports = {
             const average = totalScore / responden;
 
             let status = '';
-            if (average >= 25 && responden >= 5) {
+            if (average >= 3.5 && responden >= 5) {
                 status = 'Kamu bisa mulai merancang produkmu';
-            } else if (average >= 25 && responden < 5) {
+            } else if (average >= 3.5 && responden < 5) {
                 status = 'Cari responden lagi';
-            } else if (average < 25){
+            } else if (average < 3.5){
                 status = 'Perbaiki idemu';
             } else {
                 status = 'failed';
@@ -92,7 +99,7 @@ module.exports = {
             
             res.status(200).json({
                 message: 'Average score retrieved',
-                average,
+                average: average.toFixed(2),
                 responden,
                 status,
             });

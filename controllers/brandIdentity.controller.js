@@ -4,13 +4,13 @@ module.exports = {
     updateBrandIdentity: async (req, res) => {
         try {
             const { id } = req.params;
-            const { project, logo, name, tagline, color } = req.body;
+            const { project, logoPreview, brandName, tagline, palette } = req.body;
             const brandIdentity = await BrandIdentity.findByIdAndUpdate(id, {
                 project,
-                logo,
-                name,
+                logoPreview,
+                brandName,
                 tagline,
-                color,
+                palette,
             }, { new: true });
             res.status(200).json({
                 message: 'Brand Identity updated',

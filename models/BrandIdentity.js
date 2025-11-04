@@ -6,11 +6,11 @@ const BrandIdentitySchema = new mongoose.Schema({
         ref: 'Project',
         required: false,
     },
-    logo: {
+    logoPreview: {
         type: String,
         required: false,
     },
-    name: {
+    brandName: {
         type: String,
         required: false,
     },
@@ -18,10 +18,10 @@ const BrandIdentitySchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    color: {
+    palette: [{
         type: String,
         required: false,
-    },
+    }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('brand_identity', BrandIdentitySchema);
