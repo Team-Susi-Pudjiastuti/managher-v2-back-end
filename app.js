@@ -6,8 +6,16 @@ const allRoutes = require('./routes/index');
 const port = process.env.PORT || 3000;
 const connectDB = require('./config/db');
 
+// Pasang CORS global
 app.use(cors({
-  origin: 'http://localhost:3001', // izin untuk development
+  origin: 'http://localhost:3001',
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true
+}));
+
+// Handle preflight secara manual (kadang dibutuhkan)
+app.options('*', cors({
+  origin: 'http://localhost:3001',
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   credentials: true
 }));
