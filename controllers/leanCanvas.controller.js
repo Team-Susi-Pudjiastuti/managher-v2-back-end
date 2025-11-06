@@ -1,49 +1,40 @@
 const LeanCanvas = require('../models/LeanCanvas');
-const BusinessIdea = require('../models/BusinessIdea');
-// controllers/leanCanvasController.js
 
-// 💡 Fungsi mapping dari BusinessIdea → LeanCanvas
-function mapIdeaToLeanCanvas(idea, projectId) {
-  const product = idea.productsServices?.[0] || {};
-  return {
-    project: projectId,
-    problem: idea.problem || '',
-    solution: `${idea.solution || ''}\n\n${product.deskripsi || ''}`,
-    customerSegments: idea.customerSegments || '',
-    uniqueValueProposition: `${idea.interest?.toUpperCase() || ''} — ${product.keunggulan_unik || ''}`,
-    unfairAdvantage: idea.gainCreators || '',
-    keyMetrics: product.angka_penting || '',
-    channels: product.cara_jualan || '',
-    costStructure: `${product.biaya_modal || ''}\n${product.biaya_bahan_baku || ''}`,
-    revenueStreams: product.harga || product.harga_jual || '',
-  };
-}
-
-// 🚀 Endpoint untuk ambil Lean Canvas berdasarkan project
-exports.getLeanCanvasByProject = async (req, res) => {
+// controller/getLeanCanvas.js
+exports.getLeanCanvas = async (req, res) => {
   try {
     const { projectId } = req.params;
+
     let leanCanvas = await LeanCanvas.findOne({ project: projectId });
 
-    if (leanCanvas) {
-      return res.status(200).json({ leanCanvas });
+    if (!leanCanvas) {
+      // Jika belum ada, bisa buat dari Business Idea
+      const businessIdea = await BusinessIdea.findOne({ project: projectId });
+      if (!businessIdea) {
+        return res.status(404).json({ message: 'Lean Canvas dan Business Idea tidak ditemukan' });
+      }
+
+      // Mapping businessIdea ke LeanCanvas
+      leanCanvas = {
+        project: projectId,
+        problem: businessIdea.problem || '',
+        solution: businessIdea.solution || '',
+        customerSegments: businessIdea.customerSegments || '',
+        uniqueValueProposition: businessIdea.interest || '',
+        unfairAdvantage: businessIdea.gainCreators || '',
+        keyMetrics: businessIdea.keyMetrics || '',
+        channels: businessIdea.channels || '',
+        costStructure: businessIdea.costStructure || '',
+        revenueStreams: businessIdea.revenueStreams || '',
+      };
     }
 
-    // Jika belum ada LeanCanvas → ambil dari BusinessIdea
-    const businessIdea = await BusinessIdea.findOne({ project: projectId });
-    if (!businessIdea) {
-      return res.status(404).json({ message: 'Business Idea not found' });
-    }
-
-    // Gunakan fungsi mapping di sini
-    const initialData = mapIdeaToLeanCanvas(businessIdea, projectId);
-
-    res.status(200).json({ initialData, isFromBusinessIdea: true });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ message: error.message });
+    res.status(200).json(leanCanvas);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 };
+
 
 
 // PUT /api/lean-canvas/project/:projectId
