@@ -18,4 +18,4 @@ const leanCanvasSchema = new mongoose.Schema({
   revenueStreams: { type: String, default: '' },
 }, { timestamps: true });
 
-module.exports = mongoose.model('LeanCanvas', leanCanvasSchema);
+module.exports = mongoose.model('lean_canvas', leanCanvasSchema);
