@@ -6,7 +6,11 @@ const allRoutes = require('./routes/index');
 const port = process.env.PORT || 3000;
 const connectDB = require('./config/db');
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3001', // izin untuk development
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true
+}));
 app.use(express.json());
 connectDB();
 
