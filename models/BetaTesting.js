@@ -20,4 +20,4 @@ const BetaTestingSchema = new mongoose.Schema({
   }],
 }, { timestamps: true });
 
-module.exports = mongoose.model('BetaTesting', BetaTestingSchema);
+module.exports = mongoose.model('beta_testing', BetaTestingSchema);

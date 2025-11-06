@@ -7,7 +7,6 @@ const LaunchProductSchema = new mongoose.Schema({
     ref: 'Project',
     required: true,
   },
-  // ✅ Simpan sebagai object, bukan array
   checklist: {
     social: { type: Boolean, default: false },
     photos: { type: Boolean, default: false },
@@ -20,4 +19,4 @@ const LaunchProductSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('LaunchProduct', LaunchProductSchema);
+module.exports = mongoose.model('launch_product', LaunchProductSchema);
