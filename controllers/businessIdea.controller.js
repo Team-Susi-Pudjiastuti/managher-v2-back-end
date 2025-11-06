@@ -1,7 +1,7 @@
 const BusinessIdea = require('../models/BusinessIdea');
 
 module.exports = {
-    // ✅ TAMBAHKAN FUNGSI BARU
+    
     getBusinessIdeaByProject: async (req, res) => {
         try {
             const { projectId } = req.params;
@@ -33,23 +33,15 @@ module.exports = {
     updateBusinessIdea: async (req, res) => {
         try {
             const id = req.params.id;
-            const { interest, idea, description, category, features, benefits, problemSolved, solutionOffered, marketPotential, uniqueValueProposition, unfairAdvantage, keyMetrics, revenueStream, costStructure, channel } = req.body;
+            const { interest, customerSegments, problem, solution, productsServices, painRelievers, gainCreators } = req.body;
             const businessIdea = await BusinessIdea.findByIdAndUpdate(id, {
                 interest,
-                idea,
-                description,
-                category,
-                features,
-                benefits,
-                problemSolved,
-                solutionOffered,
-                marketPotential,
-                uniqueValueProposition,
-                unfairAdvantage,
-                keyMetrics,
-                revenueStream,
-                costStructure,
-                channel,
+                customerSegments,
+                problem,
+                solution,
+                productsServices,
+                painRelievers,
+                gainCreators
             }, { new: true });
             
             if (!businessIdea) {
