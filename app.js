@@ -8,7 +8,10 @@ const connectDB = require('./config/db');
 
 // Pasang CORS global
 app.use(cors({
-  origin: 'https://managher-v2.vercel.app',
+  origin: [
+    'https://managher-v2.vercel.app',
+    'http://localhost:3000'
+  ],
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   credentials: true
 }));
