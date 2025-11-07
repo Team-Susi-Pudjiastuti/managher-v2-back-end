@@ -129,7 +129,7 @@ const createProjectPhase = async (projectId) => {
 
     const [businessIdea, rww, brandIdentity] = await Promise.all([
         BusinessIdea.create({ project: projectId }),
-        // RWWTesting.create({ project: projectId }),
+        RWWTesting.create({ project: projectId }),
         // ProductConcept.create({ project: projectId }),
         BrandIdentity.create({ project: projectId }),
     ]);
@@ -198,7 +198,10 @@ const createProjectPhase = async (projectId) => {
             icon: "CheckCircle",
             xp: 20,
             badge: "Pengambil Keputusan",
-            entities: [],
+            entities: [{
+                entity_type: 'rww_testing',
+                entity_ref: rww._id,
+            }],
             path: 'level_2_rww',
         },
         {
