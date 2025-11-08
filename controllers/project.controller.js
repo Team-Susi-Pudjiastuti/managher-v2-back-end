@@ -162,16 +162,16 @@ const createProjectPhase = async (projectId) => {
         }),
         LaunchProduct.create({ 
             project: projectId,
-            levels: Level._id,
-            checklist: [
-                { title: "Check A"},
-                { title: "Check B"},
-                { title: "Check C"},
-                { title: "Check D"},
-                { title: "Check E"},
-                { title: "Check F"},
-                { title: "Check G"},
-            ],
+            checklist: {
+                social: false,
+                photos: false,
+                payment: false,
+                offer: false,
+                delivery: false,
+                price: false,
+                feedback: false,
+                schedule: false,
+            }
         })
     ]);
 
@@ -187,7 +187,7 @@ const createProjectPhase = async (projectId) => {
             entities: [{
                 entity_type: 'business_idea',
                 entity_ref: businessIdea._id,
-            }],
+            }], 
             path: 'level_1_idea',
         },
         {

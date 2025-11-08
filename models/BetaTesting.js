@@ -7,7 +7,7 @@ const BetaTestingSchema = new mongoose.Schema({
     ref: 'Project',
     required: true,
   },
-  // ✅ Simpan array responden
+
   responses: [{
     name: String,
     age: Number,

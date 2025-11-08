@@ -4,7 +4,7 @@ const router = express.Router();
 
 // routes/prototype.routes.js
 // Ganti dari `/:project` → `/project/:projectId`
-router.get('/project/:projectId', prototypeController.getPrototype);
-router.put('/project/:projectId', prototypeController.updatePrototype);
+router.get('/:projectId', prototypeController.getPrototype);
+router.put('/:projectId', prototypeController.updatePrototype);
 
 module.exports = router;
