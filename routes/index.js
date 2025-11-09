@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { verifyToken } = require('../middleware/auth');
+
 // const authRoutes = require('./auth.router');
 const userRoutes = require('./user.router');
 const projectRoutes = require('./project.router');
@@ -19,18 +21,18 @@ const launchProductRoutes = require('./launchProduct.router');
 
 // router.use('/auth', authRoutes);
 router.use('/api/', userRoutes);
-router.use('/api/project', projectRoutes);
-router.use('/api/phase', phaseRoutes);
-router.use('/api/level', levelRoutes);
+router.use('/api/project', verifyToken, projectRoutes);
+router.use('/api/phase', verifyToken, phaseRoutes);
+router.use('/api/level', verifyToken, levelRoutes);
 
-router.use('/api/business-idea', businessIdeaRoutes);
-router.use('/api/rww-testing', rwwTestingRoutes);
-router.use('/api/product-concept', productConceptRoutes);
-router.use('/api/brand-identity', brandIdentityRoutes);
-router.use('/api/lean-canvas', leanCanvasRoutes);
-router.use('/api/prototype', prototypeRoutes);
-router.use('/api/beta-testing', betaTestingRoutes);
-router.use('/api/launch', launchProductRoutes);
+router.use('/api/business-idea', verifyToken, businessIdeaRoutes);
+router.use('/api/rww-testing', verifyToken, rwwTestingRoutes);
+router.use('/api/product-concept', verifyToken, productConceptRoutes);
+router.use('/api/brand-identity', verifyToken, brandIdentityRoutes);
+router.use('/api/lean-canvas', verifyToken, leanCanvasRoutes);
+router.use('/api/prototype', verifyToken, prototypeRoutes);
+router.use('/api/beta-testing', verifyToken, betaTestingRoutes);
+router.use('/api/launch', verifyToken, launchProductRoutes);
 
 
 

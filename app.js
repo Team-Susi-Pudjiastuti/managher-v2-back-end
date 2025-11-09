@@ -10,7 +10,7 @@ const connectDB = require('./config/db');
 app.use(cors({
   origin: [
     'https://managher-v2.vercel.app',
-    'http://localhost:3000'
+    'http://localhost:3001'
   ],
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   credentials: true
