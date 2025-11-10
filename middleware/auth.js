@@ -1,26 +1,23 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-    verifyToken: async (req, res, next) => {
-        // Get token from request header
-        const token = req.header('Authorization');
-        if (!token) {
-            return res.status(401).json({ message: 'Login first to access this resource' });
-        }
+  verifyToken: async (req, res, next) => {
+    try {
+      // Ambil token langsung dari cookies
+      const token = req.cookies?.token;
 
-        // Remove 'Bearer' prefix from token
-        const jwtToken = token.split(' ')[1];
-        if (!jwtToken) {
-            return res.status(401).json({ message: 'Invalid token format' });
-        }
+      if (!token) {
+        return res.status(401).json({ message: "Login first to access this resource" });
+      }
 
-        try {
-            // Verify token
-            const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
-            req.user = decoded;
-            next();
-        } catch (error) {
-            return res.status(403).json({ message: 'Failed to authenticate token' });
-        }
-    },
-}
+      // Langsung verifikasi token (tidak perlu split)
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      req.user = decoded;
+      next();
+    } catch (error) {
+      console.error("Token verify failed:", error.message);
+      return res.status(403).json({ message: "Failed to authenticate token" });
+    }
+  },
+};

@@ -64,9 +64,16 @@ module.exports = {
             }, process.env.JWT_SECRET, { 
                 expiresIn: '1d' 
             });
+
+            res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000,
+            });
             
             res.status(200).json({ 
-                token,
                 message: 'Login successful', 
                 data: { 
                     id: findUser._id,

@@ -5,6 +5,9 @@ const cors = require('cors');
 const allRoutes = require('./routes/index');
 const port = process.env.PORT || 3000;
 const connectDB = require('./config/db');
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
 
 // Pasang CORS global
 app.use(cors({
