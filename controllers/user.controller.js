@@ -84,6 +84,32 @@ module.exports = {
         }
     },
 
+    me: (req, res) => {
+        const token = req.cookies.token; // ambil dari cookie
+        if (!token) return res.json({ user: null });
+    
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            res.json({
+                user: { id: decoded.id, username: decoded.username },
+            });
+        } catch (e) {
+            res.clearCookie("token");
+            res.json({ user: null });
+        }
+    },
+
+    logout: (req, res) => {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/',
+        });
+        res.json({ message: "Logout successful" });
+    },
+
+
     // getProfile: async (req, res) => {
     //     try {
     //         const user = await UserModel.findById(req.params.id);
