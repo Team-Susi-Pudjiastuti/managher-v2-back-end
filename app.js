@@ -15,7 +15,7 @@ app.use(cors({
     'https://managher-v2.vercel.app',
     'http://localhost:3001'
   ],
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   credentials: true
 }));
 
