@@ -156,10 +156,7 @@ const createProjectPhase = async (projectId) => {
     ]);
 
     const [betaTesting, launchProduct] = await Promise.all([
-        BetaTesting.create({ 
-            project: projectId,
-            prototypeId: prototype._id,
-        }),
+        BetaTesting.create({ project: projectId }),
         LaunchProduct.create({ 
             project: projectId,
             checklist: {
