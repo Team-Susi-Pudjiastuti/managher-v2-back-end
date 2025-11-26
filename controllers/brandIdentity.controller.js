@@ -55,22 +55,22 @@ module.exports = {
     }
   },
 
-  // ✅ PERBAIKAN UTAMA: upload logo
+  // PERBAIKAN UTAMA: upload logo
   updateBrandIdentityLogoPreview: async (req, res) => {
     try {
       const { id } = req.params;
 
-      // ✅ Validasi file diterima
+      // Validasi file diterima
       if (!req.file) {
         return res.status(400).json({ message: 'No image file uploaded. Please select a valid image (JPG, PNG, GIF).' });
       }
 
-      // ✅ Upload ke Cloudinary
+      // Upload ke Cloudinary
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: 'brandIdentity',
       });
 
-      // ✅ Update database
+      // Update database
       const brandIdentity = await BrandIdentity.findByIdAndUpdate(
         id,
         { logoPreview: result.secure_url },
@@ -81,18 +81,18 @@ module.exports = {
         return res.status(404).json({ message: 'Brand Identity not found' });
       }
 
-      // ✅ Hapus file sementara dari disk
+      // Hapus file sementara dari disk
       fs.unlinkSync(req.file.path);
 
-      // ✅ Respons sukses
+      // Respons sukses
       res.status(200).json({
         message: 'Logo uploaded successfully',
          brandIdentity,
       });
     } catch (err) {
-      console.error('🔥 Logo upload error:', err);
+      console.error('Logo upload error:', err);
 
-      // ✅ Hapus file sementara jika ada error
+      // Hapus file sementara jika ada error
       if (req.file && req.file.path && fs.existsSync(req.file.path)) {
         fs.unlinkSync(req.file.path);
       }

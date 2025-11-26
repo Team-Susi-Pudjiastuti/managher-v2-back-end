@@ -8,6 +8,7 @@ const PrototypeSchema = new mongoose.Schema({
     required: true,
   },
   products: [{
+    id: { type: String, required: true },
     name: { type: String, default: '' },
     description: { type: String, default: '' },
     price: { type: Number, default: 0 },

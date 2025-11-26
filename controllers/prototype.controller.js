@@ -1,5 +1,7 @@
 // controllers/prototypeController.js
 const Prototype = require('../models/Prototype');
+const cloudinary = require('../utils/cloudinary');
+const fs = require('fs');
 
 exports.getPrototype = async (req, res) => {
   try {
@@ -41,5 +43,24 @@ exports.updatePrototype = async (req, res) => {
   } catch (error) {
     console.error('Update prototype error:', error);
     res.status(400).json({ message: error.message });
+  }
+};
+
+exports.uploadImage = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+
+    // upload ke Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'prototype',
+    });
+
+    // hapus file lokal
+    fs.unlink(req.file.path, () => {});
+
+    res.status(200).json({ url: result.secure_url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
   }
 };
